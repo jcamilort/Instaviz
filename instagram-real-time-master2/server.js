@@ -1,13 +1,11 @@
 var express = require("express");
 var app = express();
+var port = process.env.PORT || 3700;
+var io = require('socket.io').listen(app.listen(port));
 var Instagram = require('instagram-node-lib');
 var http = require('http');
 var request = ('request');
 var intervalID;
-var server=http.createServer(app);
-var io = require('socket.io').listen(server);
-
-server.listen(8080);
 
 /**
  * Set the paths for your files
@@ -28,8 +26,8 @@ var clientID = 'c40fb0ae288e42a6ab2e74c2789d7c61',
  */
 Instagram.set('client_id', clientID);
 Instagram.set('client_secret', clientSecret);
-//Instagram.set('callback_url', 'http://YOUR_URL.COM/callback');
-//Instagram.set('redirect_uri', 'http://YOUR_URL.com');
+Instagram.set('callback_url', window.location.hostname+'/callback');
+Instagram.set('redirect_uri', window.location.hostname);
 Instagram.set('maxSockets', 10);
 
 /**
@@ -37,23 +35,22 @@ Instagram.set('maxSockets', 10);
  * with the tag "hashtag" lollapalooza
  * @type {String}
  */
- /**
 Instagram.subscriptions.subscribe({
   object: 'tag',
-  object_id: 'lollapalooza',
+  object_id: 'panoramika',
   aspect: 'media',
   callback_url: 'http://YOUR_URL.com/callback',
   type: 'subscription',
   id: '#'
 });
-*/
+
 
 // if you want to unsubscribe to any hashtag you subscribe
 // just need to pass the ID Instagram send as response to you
 //Instagram.subscriptions.unsubscribe({ id: '3668016' });
-
+/**
 // https://devcenter.heroku.com/articles/using-socket-io-with-node-js-on-heroku
-/**io.configure(function () { 
+io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
   io.set("polling duration", 10); 
 });

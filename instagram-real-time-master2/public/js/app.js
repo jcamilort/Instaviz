@@ -1,5 +1,5 @@
 (function() {
-    var socket = io.connect('http://localhost:8080');
+    var socket = io.connect(window.location.hostname);
 
     /**
      * [Namespacing]
@@ -14,28 +14,7 @@
         init: function() {
             this.mostRecent();
             this.getData();
-            this.aboutInfo();
-            this.mobileNav();
         },
-
-        /**
-         * [Interaction to open mobile navigation]
-         */
-        mobileNav: function() {
-            var btMobNav = $('#js-mobNav'),
-                nav = $('.nav');
-
-            btMobNav.on('click', function(e) {
-                e.preventDefault();
-                if( !nav.hasClass('active') ) {
-                    nav.addClass('active');
-                } else {
-                    nav.removeClass('active');
-                }
-            });
-
-        },
-
         /**
          * [get data ajax and send to render method]
          */
@@ -116,39 +95,7 @@
 
                 imgWrap.html(result);
             });
-        },
-
-        /**
-         * [about view interaction show/hide]
-         */
-        aboutInfo: function() {
-            var about = $('.aboutWrap'),
-                btClose = $('#js-closeAbout').find('a'),
-                bt = $('#js-btAbout'),
-                user = localStorage.getItem('user');
-
-            if( user ) {
-                about.removeClass('active');
-            } else {
-                localStorage.setItem('user', 'visited');
-            }
-
-            btClose.on('click', function(e) {
-                e.preventDefault();
-                about.removeClass('active');
-            });
-
-            bt.on('click', function(e) {
-                e.preventDefault();
-                if( !about.hasClass('active') ) {
-                    about.addClass('active');
-                } else {
-                    about.removeClass('active');
-                }
-            });
-
         }
-
     };
 
     Insta.App.init();
